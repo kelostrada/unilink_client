@@ -4,13 +4,17 @@ defmodule UnilinkClient.MixProject do
   def project do
     [
       app: :unilink_client,
-      version: "0.1.0",
+      version: "1.0.0-rc0",
       elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.html": :test],
+      description: description(),
+      package: package(),
+      source_url: "https://github.com/kelostrada/unilink_client",
+      homepage_url: "https://unilink.io"
     ]
   end
 
@@ -34,6 +38,19 @@ defmodule UnilinkClient.MixProject do
       {:plug, "~> 1.0"},
       {:mock, "~> 0.3.0", only: :test},
       {:excoveralls, "~> 0.8", only: :test},
+      {:ex_doc, ">= 0.0.0", only: :dev},
+    ]
+  end
+
+  defp description() do
+    "Elixir client for Unilink Affiliation Service"
+  end
+
+  defp package() do
+    [
+      files: ["lib", "mix.exs", "README*"],
+      licenses: ["Apache 2.0"],
+      links: %{"GitHub" => "https://github.com/kelostrada/unilink_client"}
     ]
   end
 end
