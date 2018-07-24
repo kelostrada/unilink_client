@@ -1,22 +1,35 @@
 defmodule UnilinkClient.PlugTest do
-  use ExUnit.Case
+  use UnilinkClient.ConnCase
 
-  use Phoenix.ConnTest
-  @endpoint UnilinkClient.Endpoint
+  alias UnilinkClient.Config
 
-  # alias UnilinkClient.Plug
+  test "debugs token", %{setting: setting} do
+    token = Phoenix.Token.sign(Config.endpoint, Config.salt, "1")
 
-  setup do
-    conn = Phoenix.ConnTest.build_conn()
-    %{conn: conn}
+    query_string = "api_key=" <> setting.api_key
+    url = "/unilink/debug_token" <> "?" <> query_string
+    body = Jason.encode!(%{token: token})
+
+    conn =
+      build_conn(:post, url, body)
+      |> sign_conn(body, query_string, setting.api_secret)
+      |> @endpoint.call([])
+
+    assert %{"id" => "1", "valid" => true} == json_response(conn, 200)
   end
 
-  test "debugs token", %{conn: conn} do
-    conn = post conn, "/unilink/debug_token", lol: %{a: 1}
-    IO.inspect json_response(conn, 200)
+  test "fails to debug token", %{setting: setting} do
 
+    query_string = "api_key=" <> setting.api_key
+    url = "/unilink/debug_token" <> "?" <> query_string
+    body = Jason.encode!(%{token: "invalid token"})
 
+    conn =
+      build_conn(:post, url, body)
+      |> sign_conn(body, query_string, setting.api_secret)
+      |> @endpoint.call([])
+
+    assert %{"valid" => false, "reason" => "invalid"} == json_response(conn, 200)
   end
-
 
 end

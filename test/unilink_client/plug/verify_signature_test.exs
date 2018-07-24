@@ -1,19 +1,7 @@
 defmodule UnilinkClient.Plug.VerifySignatureTest do
-  use ExUnit.Case
-  alias UnilinkClient.{Config, ProtocolSecurity, Plug.VerifySignature}
+  use UnilinkClient.ConnCase
+  alias UnilinkClient.Plug.VerifySignature
   import Plug.Conn
-
-  defp build_conn(method, url, body \\ nil) do
-    %Plug.Conn{}
-    |> Plug.Adapters.Test.Conn.conn(method, url, body)
-    |> fetch_query_params()
-  end
-
-  setup do
-    conn = build_conn(:get, "/")
-    [setting] = Config.settings()
-    %{conn: conn, setting: setting}
-  end
 
   test "Signed message should pass signature verification", %{setting: setting} do
     query_string = "api_key=" <> setting.api_key
@@ -24,6 +12,7 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
       build_conn(:post, url, body)
       |> put_private(:raw_body, body)
       |> sign_conn(body, query_string, setting.api_secret)
+      |> fetch_query_params()
       |> VerifySignature.verify_signature(%{})
 
     assert conn.status == nil
@@ -40,6 +29,7 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
       build_conn(:post, url, body)
       |> put_private(:raw_body, body)
       |> sign_conn(body, "wrong_query_string", setting.api_secret)
+      |> fetch_query_params()
       |> VerifySignature.verify_signature(%{})
 
     assert conn.status == 401
@@ -56,6 +46,7 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
       build_conn(:post, url, "wrong_body")
       |> put_private(:raw_body, body)
       |> sign_conn("wrong_body", query_string, setting.api_secret)
+      |> fetch_query_params()
       |> VerifySignature.verify_signature(%{})
 
     assert conn.status == 401
@@ -71,6 +62,7 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
     conn =
       build_conn(:post, url, body)
       |> put_private(:raw_body, body)
+      |> fetch_query_params()
       |> VerifySignature.verify_signature(%{})
 
     assert conn.status == 401
@@ -78,15 +70,4 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
     assert conn.halted == true
   end
 
-  # PRIVATE
-
-  defp sign_conn(conn, body, query_string, secret) do
-    timestamp = :os.system_time(:seconds)
-    signature = ProtocolSecurity.signature(body, query_string, timestamp, secret)
-
-    conn
-    |> put_req_header("authorization", signature)
-    |> put_req_header("timestamp", Integer.to_string(timestamp))
-    |> put_req_header("content-type", "application/json")
-  end
 end

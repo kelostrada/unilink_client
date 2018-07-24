@@ -1,5 +1,4 @@
 defmodule UnilinkClient.Plug do
-  import Plug.Conn
   import UnilinkClient.Plug.VerifySignature
   import UnilinkClient.Callbacks
 

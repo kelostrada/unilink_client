@@ -1,9 +1,9 @@
 defmodule RawBodyReader do
 
-  def read_body(conn, opts, _verified_providers, _verifiers) do
+  def read_body(conn, opts) do
     {:ok, body, conn} = Plug.Conn.read_body(conn, opts)
-    conn = update_in(conn.assigns[:raw_body], &[body | (&1 || [])])
+    conn = update_in(conn.private[:raw_body], fn _ -> body end)
     {:ok, body, conn}
   end
-  
+
 end

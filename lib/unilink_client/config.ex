@@ -1,7 +1,5 @@
 defmodule UnilinkClient.Config do
 
-
-
   def active?, do: !Application.get_env(:unilink_client, :inactive, false)
 
   def api_url, do: Application.fetch_env!(:unilink_client, :api_url)
@@ -17,6 +15,8 @@ defmodule UnilinkClient.Config do
   def module, do: Application.fetch_env!(:unilink_client, :module)
 
   def receive_deposit_path, do: Application.get_env(:unilink_client, :receive_deposit_path, "/unilink/receive_deposit")
+
+  def salt, do: Application.get_env(:unilink_client, :salt, "token salt")
 
   def settings do
     module().get_settings()
