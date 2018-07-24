@@ -2,11 +2,9 @@ defmodule UnilinkClient.Config do
 
   def active?, do: !Application.get_env(:unilink_client, :inactive, false)
 
-  def api_url, do: Application.fetch_env!(:unilink_client, :api_url)
+  def api_url, do: Application.get_env(:unilink_client, :api_url, "https://api.unilink.io")
 
   def debug_token_path, do: Application.get_env(:unilink_client, :debug_token_path, "/unilink/debug_token")
-
-  def login_url, do: Application.fetch_env!(:unilink_client, :login_url)
 
   def event_sources, do: Application.fetch_env!(:unilink_client, :event_sources)
 

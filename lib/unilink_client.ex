@@ -60,6 +60,10 @@ defmodule UnilinkClient do
       @doc false
       def get_server_lazy_work_delay(), do: 1000
 
+      def get_login_url(api_key, user_id) do
+        UnilinkClient.Uri.login(api_key, user_id)
+      end
+
       defoverridable  get_server_start_delay: 0,
                       get_server_lazy_work_delay: 0
     end

@@ -1,6 +1,6 @@
 defmodule UnilinkClient.ApiClient do
   require Logger
-  alias UnilinkClient.{Config, ProtocolSecurity}
+  alias UnilinkClient.{ProtocolSecurity, Uri}
 
   @max_allowed_clock_skew 5
 
@@ -15,7 +15,7 @@ defmodule UnilinkClient.ApiClient do
     payload = Poison.encode!(body)
     signature = ProtocolSecurity.signature(payload, nil, timestamp, api_secret)
 
-    response = send_request!(Config.api_url, payload, signature, timestamp)
+    response = send_request!(Uri.publish(), payload, signature, timestamp)
     Logger.info("Unilink response #{inspect response}")
 
     response
