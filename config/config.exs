@@ -12,7 +12,7 @@ config :unilink_client,
   api_url: "https://api.unilink.io/api/publish",
   login_url: "https://api.unilink.io/auth/platform_login?platform=[API_KEY]&token=",
   debug_token_path: "/unilink/debug_token",
-  receive_deposit: "/unilink/receive_profit"
+  receive_profit_path: "/unilink/receive_profit"
 
 
 # Do not print logs in tests

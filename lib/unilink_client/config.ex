@@ -14,7 +14,7 @@ defmodule UnilinkClient.Config do
 
   def module, do: Application.fetch_env!(:unilink_client, :module)
 
-  def receive_deposit_path, do: Application.get_env(:unilink_client, :receive_deposit_path, "/unilink/receive_deposit")
+  def receive_profit_path, do: Application.get_env(:unilink_client, :receive_profit_path, "/unilink/receive_profit")
 
   def salt, do: Application.get_env(:unilink_client, :salt, "token salt")
 

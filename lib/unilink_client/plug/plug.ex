@@ -8,18 +8,19 @@ defmodule UnilinkClient.Plug do
 
   def call(conn, opts) do
     debug_token_path = Config.debug_token_path()
-    receive_deposit_path = Config.receive_deposit_path()
+    receive_profit_path = Config.receive_profit_path()
 
     case conn.request_path do
       ^debug_token_path ->
         conn
         |> verify_signature(opts)
         |> verify_token(opts)
-      ^receive_deposit_path ->
+      ^receive_profit_path ->
         conn
         |> verify_signature(opts)
-        |> handle_deposit(opts)
-      _ -> conn
+        |> handle_profit(opts)
+      _ ->
+        conn
     end
   end
 

@@ -1,4 +1,7 @@
 defmodule RawBodyReader do
+  @moduledoc """
+  
+  """
 
   def read_body(conn, opts) do
     {:ok, body, conn} = Plug.Conn.read_body(conn, opts)

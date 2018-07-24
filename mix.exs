@@ -36,6 +36,7 @@ defmodule UnilinkClient.MixProject do
       {:httpoison, "~> 1.0"},
       {:poison, "~> 2.2 or ~> 3.0"},
       {:phoenix, "~> 1.3"},
+      {:decimal, "~> 1.0"},
       {:mock, "~> 0.3.0", only: :test},
       {:excoveralls, "~> 0.8", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},
