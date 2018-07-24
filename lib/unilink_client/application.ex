@@ -5,9 +5,11 @@ defmodule UnilinkClient.Application do
 
   use Application
 
+  @children if Mix.env == :prod, do: [], else: [UnilinkClient.Endpoint]
+
   def start(_type, _args) do
     # List all child processes to be supervised
-    children = [
+    children = @children ++ [
       UnilinkClient.Server,
     ]
 

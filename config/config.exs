@@ -1,10 +1,19 @@
 use Mix.Config
 
+# Configures the endpoint
+config :unilink_client, UnilinkClient.Endpoint,
+  url: [host: "localhost"],
+  secret_key_base: "nhXyaUP7Vs1PUZquWiRkYoANWRH/heAAGidOTK1Ox1VmL16HCnw2rDb6MptXjlsU"
+
 config :unilink_client,
   module: UnilinkClient.TestClient,
+  endpoint: UnilinkClient.Endpoint,
   event_sources: [],
   api_url: "https://api.unilink.io/api/publish",
-  login_url: "https://api.unilink.io/auth/platform_login?platform=[API_KEY]&token="
+  login_url: "https://api.unilink.io/auth/platform_login?platform=[API_KEY]&token=",
+  debug_token_path: "/unilink/debug_token",
+  receive_deposit: "/unilink/receive_profit"
+
 
 # Do not print logs in tests
 config :logger, level: :warn

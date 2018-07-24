@@ -24,7 +24,7 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
       build_conn(:post, url, body)
       |> put_private(:raw_body, body)
       |> sign_conn(body, query_string, setting.api_secret)
-      |> VerifySignature.call(%{})
+      |> VerifySignature.verify_signature(%{})
 
     assert conn.status == nil
     assert conn.state == :unset
@@ -40,7 +40,7 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
       build_conn(:post, url, body)
       |> put_private(:raw_body, body)
       |> sign_conn(body, "wrong_query_string", setting.api_secret)
-      |> VerifySignature.call(%{})
+      |> VerifySignature.verify_signature(%{})
 
     assert conn.status == 401
     assert conn.state == :sent
@@ -56,7 +56,7 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
       build_conn(:post, url, "wrong_body")
       |> put_private(:raw_body, body)
       |> sign_conn("wrong_body", query_string, setting.api_secret)
-      |> VerifySignature.call(%{})
+      |> VerifySignature.verify_signature(%{})
 
     assert conn.status == 401
     assert conn.state == :sent
@@ -71,7 +71,7 @@ defmodule UnilinkClient.Plug.VerifySignatureTest do
     conn =
       build_conn(:post, url, body)
       |> put_private(:raw_body, body)
-      |> VerifySignature.call(%{})
+      |> VerifySignature.verify_signature(%{})
 
     assert conn.status == 401
     assert conn.state == :sent

@@ -34,8 +34,8 @@ defmodule UnilinkClient.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.0"},
-      {:poison, "~> 2.0 or ~> 3.0"},
-      {:plug, "~> 1.0"},
+      {:poison, "~> 2.2 or ~> 3.0"},
+      {:phoenix, "~> 1.3"},
       {:mock, "~> 0.3.0", only: :test},
       {:excoveralls, "~> 0.8", only: :test},
       {:ex_doc, ">= 0.0.0", only: :dev},

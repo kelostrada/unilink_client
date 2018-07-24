@@ -5,11 +5,7 @@ defmodule UnilinkClient.Plug.VerifySignature do
 
   @max_allowed_clock_skew 5
 
-  def init(opts \\ %{}), do: Enum.into(opts, %{})
-
-  def call(conn, opts), do: verify_signature(conn, opts)
-
-  defp verify_signature(%{params: %{"api_key" => api_key}, query_string: query_string} = conn, _) do
+  def verify_signature(%{params: %{"api_key" => api_key}, query_string: query_string} = conn, _) do
     with {:ok, api_secret} <- find_secret(api_key),
       [signature] <- get_req_header(conn, "authorization"),
       [timestamp] <- get_req_header(conn, "timestamp"),

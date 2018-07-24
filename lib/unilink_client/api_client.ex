@@ -22,7 +22,7 @@ defmodule UnilinkClient.ApiClient do
     |> validate_status_code!()
     |> check_signature!(api_secret)
 
-    Poison.Parser.parse!(response.body)
+    Poison.decode!(response.body)
   end
 
   defp check_signature!(%HTTPoison.Response{} = response, api_secret) do
