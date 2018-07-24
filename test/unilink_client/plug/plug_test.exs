@@ -77,4 +77,26 @@ defmodule UnilinkClient.PlugTest do
     assert conn.halted == false
   end
 
+  test "doesn't verify signature in receive_profit" do
+    url = "/unilink/receive_profit"
+    body = Jason.encode!(%{id: "1", user_id: "1", amount: "123.5", timestamp: 123123123})
+
+    conn =
+      build_conn(:post, url, body)
+      |> @endpoint.call([])
+
+    assert response(conn, 401)
+  end
+
+  test "doesn't verify signature in debug_token" do
+    url = "/unilink/debug_token"
+    body = Jason.encode!(%{token: "token"})
+
+    conn =
+      build_conn(:post, url, body)
+      |> @endpoint.call([])
+
+    assert response(conn, 401)
+  end
+
 end

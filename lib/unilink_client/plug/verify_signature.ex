@@ -25,5 +25,11 @@ defmodule UnilinkClient.Plug.VerifySignature do
         |> halt
     end
   end
+  def verify_signature(conn, _) do
+    Logger.info "Required Authorization data not present, sending Unauthorized"
+    conn
+    |> send_resp(401, "Unauthorized")
+    |> halt
+  end
 
 end
