@@ -60,12 +60,35 @@ defmodule UnilinkClient do
       @doc false
       def get_server_lazy_work_delay(), do: 1000
 
-      def get_login_url(api_key, user_id) do
-        UnilinkClient.Uri.login(api_key, user_id)
-      end
-
       defoverridable  get_server_start_delay: 0,
                       get_server_lazy_work_delay: 0
     end
   end
+
+  @spec get_login_url(String.t(), String.t()) :: String.t()
+
+  @doc """
+  Returns URL to which we should redirect user so he can login seemlessly to Unilink
+  """
+  def get_login_url(api_key, user_id) do
+    UnilinkClient.Uri.login(api_key, user_id)
+  end
+
+  @spec get_secret(String.t()) ::
+    {:ok, String.t()}
+    | {:error, :setting_not_found}
+
+  @doc """
+  Finds secret for given api_key (from settings provided by UnilinkClient implementation)
+  """
+  def get_secret(api_key) do
+    UnilinkClient.Config.settings()
+    |> Enum.find(%{}, & &1.api_key == api_key)
+    |> Map.get(:api_secret)
+    |> wrap_result()
+  end
+
+  defp wrap_result(nil), do: {:error, :setting_not_found}
+  defp wrap_result(any), do: {:ok, any}
+
 end
