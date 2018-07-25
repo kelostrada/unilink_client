@@ -1,6 +1,7 @@
 defmodule UnilinkClient.Plug do
   import UnilinkClient.Plug.VerifySignature
   import UnilinkClient.Callbacks
+  import Plug.Conn
 
   alias UnilinkClient.Config
 
@@ -15,10 +16,12 @@ defmodule UnilinkClient.Plug do
         conn
         |> verify_signature(opts)
         |> verify_token(opts)
+        |> halt
       ^receive_profit_path ->
         conn
         |> verify_signature(opts)
         |> handle_profit(opts)
+        |> halt
       _ ->
         conn
     end

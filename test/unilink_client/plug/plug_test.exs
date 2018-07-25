@@ -101,4 +101,17 @@ defmodule UnilinkClient.PlugTest do
     assert response(conn, 401)
   end
 
+  test "checks that the conn is halted" do
+    url = "/unilink/debug_token"
+    body = Jason.encode!(%{token: "token"})
+
+    conn =
+      build_conn(:post, url, body)
+      |> @endpoint.call([])
+
+    assert response(conn, 401)
+
+    assert conn.halted
+  end
+
 end
