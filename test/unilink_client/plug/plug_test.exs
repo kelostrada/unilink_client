@@ -10,12 +10,14 @@ defmodule UnilinkClient.PlugTest do
     url = "/unilink/debug_token" <> "?" <> query_string
     body = Jason.encode!(%{token: token})
 
+    expires_at = 86400 + :os.system_time(:seconds) |> Integer.to_string
+
     conn =
       build_conn(:post, url, body)
       |> sign_conn(body, query_string, setting.api_secret)
       |> @endpoint.call([])
 
-    assert %{"id" => "1", "valid" => true} == json_response(conn, 200)
+    assert %{"id" => "1", "valid" => true, "expires" => expires_at} == json_response(conn, 200)
   end
 
   test "fails to debug token", %{setting: setting} do

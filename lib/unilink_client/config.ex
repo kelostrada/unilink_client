@@ -16,6 +16,8 @@ defmodule UnilinkClient.Config do
 
   def salt, do: Application.get_env(:unilink_client, :salt, "token salt")
 
+  def token_duration, do: Application.get_env(:unilink_client, :token_duration, 86400)
+
   def settings do
     module().get_settings()
     |> wrap_with_list()
