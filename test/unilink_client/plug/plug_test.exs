@@ -10,7 +10,7 @@ defmodule UnilinkClient.PlugTest do
     url = "/unilink/debug_token" <> "?" <> query_string
     body = Jason.encode!(%{token: token})
 
-    expires_at = 86400 + :os.system_time(:seconds) |> Integer.to_string
+    expires_at = 86400 + :os.system_time(:seconds)
 
     conn =
       build_conn(:post, url, body)

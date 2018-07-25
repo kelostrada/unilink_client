@@ -7,7 +7,7 @@ defmodule UnilinkClient.Callbacks do
     {:ok, api_secret} = UnilinkClient.get_secret(api_key)
     case Phoenix.Token.verify(Config.endpoint, Config.salt, token, max_age: 600) do
       {:ok, id} ->
-        expires_at = Config.token_duration + :os.system_time(:seconds) |> Integer.to_string
+        expires_at = Config.token_duration + :os.system_time(:seconds)
         json_signed_data(conn, api_secret, %{valid: true, id: id, expires: expires_at})
       {:error, error} -> json_signed_data(conn, api_secret, %{valid: false, reason: error})
     end
