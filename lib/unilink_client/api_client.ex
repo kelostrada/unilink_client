@@ -46,8 +46,8 @@ defmodule UnilinkClient.ApiClient do
   end
 
   defp validate_status_code!(%HTTPoison.Response{status_code: code} = response) when code >= 200 and code < 300, do: response
-  defp validate_status_code!(%HTTPoison.Response{status_code: code, body: body}) do
-    raise HTTPoison.Error, reason: "Unilink events publish failed with HTTP status code #{code}, #{body}"
+  defp validate_status_code!(%HTTPoison.Response{status_code: code, body: body, headers: headers}) do
+    raise HTTPoison.Error, reason: "Unilink events publish failed with HTTP status code #{code}, #{body} ,#{inspect headers}"
   end
 
   defp get_header(%HTTPoison.Response{headers: headers}, name) do
